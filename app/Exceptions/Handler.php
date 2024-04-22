@@ -31,15 +31,15 @@ class Handler extends ExceptionHandler
         });
     }
 
-    // public function render($request, Throwable $e)
-    // {
-    //     $user = Auth::user();
-    //     if (!$user) {
-    //         return response()->json([
-    //             'message' => 'Unauthenticated'
-    //         ]);
-    //     }
+    public function render($request, Throwable $e)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthenticated'
+            ]);
+        }
 
-    //     return parent::render($request, $e);
-    // }
+        return parent::render($request, $e);
+    }
 }

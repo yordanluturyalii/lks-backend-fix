@@ -6,6 +6,7 @@ use App\Models\Form;
 use App\Models\Question;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -41,6 +42,12 @@ class QuestionController extends Controller
                 throw new ValidationException($validator);
             }
             $form = Form::query()->where('slug', $slug)->first();
+
+            if ($form->creator_id != Auth::user()->id) {
+                return response()->json([
+                    'message' => 'Forbidden access'
+                ], 403);
+            }
 
             $question = new Question();
             $question->name = $request->name;
@@ -98,8 +105,18 @@ class QuestionController extends Controller
                 throw new HttpResponseException(response()->json([
                     'message' => 'Question not found'
                 ]), 404);
-            }
+            } else {
+                if ($form->creator_id != Auth::user()->id) {
+                    return response()->json([
+                        'message' => 'Forbidden access'
+                    ]);
+                }
 
+                $question->delete();
+                return response()->json([
+                    'message' => 'Remove Question Success'
+                ], 200);
+            }
         } else if (!$form) {
             throw new HttpResponseException(response()->json([
                 'message' => 'Form not found'

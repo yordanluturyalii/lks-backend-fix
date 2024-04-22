@@ -11,6 +11,7 @@ class Answer extends Model
 {
     use HasFactory;
     protected $table = 'answers';
+    protected $guarded = ['id'];
 
     public function Question() {
         return $this->belongsTo(Question::class);

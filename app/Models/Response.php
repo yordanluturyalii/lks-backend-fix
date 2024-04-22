@@ -12,6 +12,7 @@ class Response extends Model
 {
     use HasFactory;
     protected $table = 'responses';
+    protected $guarded = ['id'];
 
     public function Form() {
         return $this->belongsTo(Form::class, 'id', 'form_id');

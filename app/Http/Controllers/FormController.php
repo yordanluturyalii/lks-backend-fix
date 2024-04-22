@@ -49,7 +49,7 @@ class FormController extends Controller
             $form = Form::create($requestData);
             AllowedDomain::create([
                 'form_id' => $form->id,
-                'domain' => $request->allowed_domains ?? null
+                'domain' => $request->allowed_domains ?? []
             ]);
 
             return response()->json([
@@ -78,7 +78,7 @@ class FormController extends Controller
         }
         $user = Auth::user();
         $domain = explode('@', $user->email)[1];
-        $domainNotNull = $form->AllowedDomain->domain ?? $domain;
+        $domainNotNull = $form->AllowedDomain->domain ?? null;
 
         if (is_array($domainNotNull)) {
             $allowedDomain = in_array($domain, $domainNotNull);
