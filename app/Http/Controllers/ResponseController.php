@@ -29,13 +29,13 @@ class ResponseController extends Controller
         if (!$form) {
             return response()->json([
                 'message' => 'Form not found'
-            ]);
+            ], 404);
         }
 
         if ($form->creator_id != $user->id) {
             return response()->json([
                 'message' => 'Forbidden access'
-            ]);
+            ], 403);
         }
 
     $output = [];
@@ -57,7 +57,7 @@ class ResponseController extends Controller
     return response()->json([
         'message' => 'Get responses success',
         'responses' => $output
-    ]);
+    ], 200);
 }
 
     /**
@@ -83,14 +83,14 @@ class ResponseController extends Controller
             if (!in_array($userDomain, $formDomain)) {
                 return response()->json([
                     'message' => 'Forbidden access'
-                ]);
+                ], 403);
             }
             
             $checkResponse = Response::query()->where('form_id', $form->id)->first()->form_id ?? null;
             if ($form->limit_one_response == true && $checkResponse == $user->id) {
                 return response()->json([
                     'message' => 'You can not submit form twice'
-                ]);
+                ], 422);
             }
 
             $response = Response::create([
@@ -109,13 +109,13 @@ class ResponseController extends Controller
 
             return response()->json([
                 'message' => 'Submit form success'
-            ]); 
+            ], 200); 
 
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Invalid field',
                 'errors' => $e->errors()
-            ]);
+            ], 422);
         }
     }
 

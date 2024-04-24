@@ -24,7 +24,7 @@ class AuthController extends Controller
             if (!Auth::attempt($validator->validated())) {
                 return response()->json([
                     'message' => 'Email or password incorrect'
-                ]);
+                ], 401);
             }
 
             $user = Auth::user();
@@ -41,7 +41,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Invalid field',
                 'errors' => $e->errors()
-            ]);
+            ], 422);
         }
     }
 
@@ -52,7 +52,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'message' => 'Logout Success'
-            ]);
+            ], 200);
         }
     }
 }

@@ -109,7 +109,7 @@ class QuestionController extends Controller
                 if ($form->creator_id != Auth::user()->id) {
                     return response()->json([
                         'message' => 'Forbidden access'
-                    ]);
+                    ], 403);
                 }
 
                 $question->delete();

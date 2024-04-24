@@ -74,7 +74,7 @@ class FormController extends Controller
         if (!$form) {
             throw new HttpResponseException(response()->json([
                 'message' => 'Form not found'
-            ]));
+            ]), 404);
         }
         $user = Auth::user();
         $domain = explode('@', $user->email)[1];
